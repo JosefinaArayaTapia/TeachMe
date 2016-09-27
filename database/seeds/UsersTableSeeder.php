@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-     //   $this->createAdmin();
+        $this->createAdmin();
         $this->createUsers(50);
 
     }
