@@ -4,7 +4,7 @@ namespace teachme\Entities;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Ticket extends Model
+class TicketComment extends Model
 {
     //
 }
