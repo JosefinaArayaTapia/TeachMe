@@ -1,5 +1,5 @@
 <?php
-use Illuminate\Database\Seeder;
+use Faker\Generator;
 use \teachme\Entities\User;
 use Faker\Factory as Faker;
 
@@ -9,18 +9,28 @@ use Faker\Factory as Faker;
  * Date: 27-09-16
  * Time: 4:24 PM
  */
-class UsersTableSeeder extends Seeder
+class UsersTableSeeder extends BaseSeeder
 {
 
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+    public function getModel()
+    {
+        return new User();
+    }
+
+    public function getDummyData(Generator $faker, array $customValues = array())
+    {
+        return [
+            'name'=>$faker->name,
+            'email'=>$faker->email,
+            'password'=>bcrypt('secret')
+
+        ];
+    }
+
     public function run()
     {
         $this->createAdmin();
-        $this->createUsers(50);
+        $this->createMultiple(50);
 
     }
 
@@ -32,21 +42,5 @@ class UsersTableSeeder extends Seeder
             'password'=>bcrypt('admin')
 
         ]);
-    }
-
-    public function createUsers($total)
-    {
-        $faker = Faker::create();
-
-        for($i=0; $i <= $total;$i++){
-
-            User::create([
-
-                'name'=>$faker->name,
-                'email'=>$faker->email,
-                'password'=>bcrypt('secret')
-
-            ]);
-        }
     }
 }

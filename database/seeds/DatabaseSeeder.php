@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'ticket_comments'
         ));
         $this->call(UsersTableSeeder::class);
+        $this->call(TicketTableSeeder::class);
     }
 
     public function truncateTables($tables)
