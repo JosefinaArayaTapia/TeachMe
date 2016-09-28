@@ -1,35 +1,29 @@
 <?php
-use teachme\Entities\Ticket;
 use Faker\Generator;
-use Faker\Factory as Faker;
+use teachme\Entities\Ticket;
 
 
-/**
- * Created by IntelliJ IDEA.
- * User: Macbook
- * Date: 28-09-16
- * Time: 3:14 PM
- */
 class TicketTableSeeder extends BaseSeeder
 {
+    use SeederTrait;
+
+    public function run()
+    {
+        $this->createMultipleEntities(2);
+    }
+
     public function getModel()
     {
         return new Ticket();
     }
 
-    public function getDummyData(Generator $faker, array $customValues = array())
+    public function getDummyData(Generator $faker, array $customValues = [ ])
     {
         return [
-            'title'=>$faker->sentence(),
-            'status'=>$faker->randomElement(['open','open','closed']),
-            'user_id'=>1
-
+            'title'   => $faker->sentence(),
+            'status'  => $faker->randomElement([ 'open', 'open', 'closed' ]),
+            'user_id' => $this->getRandomEntityFromModel('teachme\Entities\User')->id
         ];
-    }
-
-    public function run()
-    {
-        return $this->createMultiple(50);
     }
 
 }

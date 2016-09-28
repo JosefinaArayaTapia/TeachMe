@@ -1,6 +1,6 @@
 <?php
-use Faker\Factory as Faker;
-use Faker\Generator;
+
+
 use Illuminate\Database\Seeder;
 
 /**
@@ -11,24 +11,67 @@ use Illuminate\Database\Seeder;
  */
 abstract class BaseSeeder extends Seeder
 {
+    protected static $poolSeeders = [];
 
+    abstract public function getModel();
 
-    protected function createMultiple($total,array $customValues=array())
+    abstract public function getDummyData(\Faker\Generator $faker, array $customValues = []);
+
+    public function __construct()
     {
-        for ($i = 0; $i <= $total; $i++) {
-            $this->create($customValues);
+
+        $this->addSeederToPool($this->getModel());
+    }
+
+    protected function createMultipleEntities($numberOfEntities, array $customValues = [])
+    {
+        for ($entitiesCounter = 1; $entitiesCounter <= $numberOfEntities; $entitiesCounter++) {
+            $this->createEntity($customValues);
         }
     }
 
-    abstract public function getModel();
-    abstract public function getDummyData(Generator $faker, array $customValues = array());
-
-    protected function create(array $customValues = array())
+    protected function getRandomEntityFromModel($modelName)
     {
 
-        $values = $this->getDummyData(Faker::create(), $customValues);
-        $values =array_merge($values,$customValues);
-        $this->getModel()->create($values);
+        return $this->getSeederFromPool($modelName)->getRandomEntity();
+    }
+
+    private function addSeederToPool($model)
+    {
+        $modelName = basename(get_class($model));
+        static::$poolSeeders[$modelName] = $this;
+        app('log')->log('critical', $modelName);
+
+        return $this;
+    }
+
+    private function getSeederFromPool($modelName)
+
+    {
+        if (!$this->existsModelInSeedersPool($modelName)) {
+
+            throw new OutOfRangeException ("The model $modelName does not exist in seeders pool");
+        }
+
+        return static::$poolSeeders[$modelName];
+    }
+
+    private function existsModelInSeedersPool($modelName)
+    {
+
+        app('log')->log('critical',$modelName);
+        return array_key_exists($modelName, static::$poolSeeders);
+
+
+    }
+
+    // Note: Duplicate number of new entities on $seederClass
+    protected function getEntityFromSeederClass($seederClass, array $customValues = [])
+    {
+        $seeder = new $seederClass;
+
+        return $seeder->createEntity($customValues);
+
     }
 
 
