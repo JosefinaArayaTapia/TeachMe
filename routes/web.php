@@ -17,19 +17,19 @@ Route::get('/', [
 ]);
 Route::get('/populares', [
     'as'   => 'tickets.popular',
-    'uses' => 'TicketsController@popular'
+    'uses' => 'TicketsController@latest'
 ]);
 Route::get('/pendientes', [
     'as'   => 'tickets.open',
-    'uses' => 'TicketsController@open'
+    'uses' => 'TicketsController@latest'
 ]);
 Route::get('/tutoriales', [
     'as'   => 'tickets.closed',
-    'uses' => 'TicketsController@closed'
+    'uses' => 'TicketsController@latest'
 ]);
 Route::get('/solicitud/{id}', [
     'as'   => 'tickets.details',
-    'uses' => 'TicketsController@details'
+    'uses' => 'TicketsController@latest'
 ]);
 Auth::routes();
 Route::get('/', 'TicketsController@latest');
