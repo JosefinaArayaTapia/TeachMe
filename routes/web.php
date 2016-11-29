@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', [
+Route::get('/recientes', [
     'as'   => 'tickets.latest',
     'uses' => 'TicketsController@latest'
 ]);
@@ -33,3 +33,13 @@ Route::get('/solicitud/{id}', [
 ]);
 Auth::routes();
 Route::get('/', 'TicketsController@latest');
+
+
+Route::get('/tutoriales', [
+    'as'   => 'tickets.closed',
+    'uses' => 'TicketsController@closed'
+]);
+Route::get('/solicitud/{id}', [
+    'as'   => 'tickets.details',
+    'uses' => 'TicketsController@details'
+]);

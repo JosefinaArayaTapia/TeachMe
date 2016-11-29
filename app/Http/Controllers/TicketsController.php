@@ -24,5 +24,15 @@ class TicketsController extends Controller
 
 
     }
+    public function closed(){
+
+        return view('tickets/list');
+
+    }
+    public function open(){
+
+        return view('tickets/list');
+
+    }
 
 }
